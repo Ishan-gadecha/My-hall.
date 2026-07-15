@@ -25,6 +25,7 @@
             --text-dim: #7f94be;
             --online: #74ffd2;
         }
+
         body {
             background:
                 radial-gradient(circle at 0% 0%, rgba(72, 123, 255, 0.24), transparent 42%),
@@ -70,20 +71,8 @@
             font-size: 14px;
         }
         .lock-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(73, 135, 255, 0.2); }
-        #lock-error {
-            color: var(--accent-red);
-            font-size: 12px;
-            min-height: 16px;
-            font-style: italic;
-        }
-        #lock-status {
-            color: var(--text-dim);
-            font-size: 11px;
-            min-height: 16px;
-            text-align: center;
-            max-width: 320px;
-            line-height: 1.4;
-        }
+        #lock-error { color: var(--accent-red); font-size: 12px; min-height: 16px; font-style: italic; }
+        #lock-status { color: var(--text-dim); font-size: 11px; min-height: 16px; text-align: center; max-width: 320px; line-height: 1.4; }
         #guild-content { display: none; width: 100%; height: 100%; }
         body.unlocked #guild-content { display: flex; }
         body.unlocked #site-lock { display: none; }
@@ -110,168 +99,59 @@
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 20px rgba(5, 12, 30, 0.3);
         }
         .panel::before, .panel::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            top: 10px;
-            background: linear-gradient(145deg, var(--accent-blue), var(--accent-red));
-            opacity: 0.75;
+            content: ''; position: absolute; width: 8px; height: 8px; border-radius: 50%; top: 10px;
+            background: linear-gradient(145deg, var(--accent-blue), var(--accent-red)); opacity: 0.75;
         }
         .panel::before { left: 10px; }
         .panel::after { right: 10px; }
         .panel h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            color: var(--text-main);
-            font-size: 11px;
-            letter-spacing: 2.2px;
-            text-transform: uppercase;
-            text-align: center;
-            border-bottom: 1px solid rgba(111, 160, 255, 0.22);
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif; color: var(--text-main); font-size: 11px; letter-spacing: 2.2px;
+            text-transform: uppercase; text-align: center; border-bottom: 1px solid rgba(111, 160, 255, 0.22);
+            padding-bottom: 8px; margin-bottom: 12px; font-weight: 600;
         }
+
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #01040a; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         .media-controls { display: flex; gap: 8px; margin-top: 10px; }
-        .radio-meta {
-            margin: 2px 0 8px;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: rgba(12, 30, 62, 0.62);
-        }
-        .radio-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 12px;
-            letter-spacing: 0.4px;
-            color: var(--text-main);
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .radio-status {
-            font-size: 11px;
-            color: var(--text-dim);
-        }
+        .radio-meta { margin: 2px 0 8px; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: rgba(12, 30, 62, 0.62); }
+        .radio-name { font-family: 'Space Grotesk', sans-serif; font-size: 12px; letter-spacing: 0.4px; color: var(--text-main); font-weight: 600; margin-bottom: 4px; }
+        .radio-status { font-size: 11px; color: var(--text-dim); }
         .media-input {
-            flex: 1;
-            background: var(--input);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 9px 11px;
-            font-size: 12px;
-            font-family: 'Inter', sans-serif;
-            border-radius: 10px;
-            outline: none;
+            flex: 1; background: var(--input); border: 1px solid var(--border); color: var(--text-main);
+            padding: 9px 11px; font-size: 12px; font-family: 'Inter', sans-serif; border-radius: 10px; outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         .media-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(73, 135, 255, 0.2); }
+        
         .btn {
             background: linear-gradient(135deg, var(--accent-blue-strong), var(--accent-red-strong));
-            color: #f3f7ff;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 0 15px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
-            letter-spacing: 0.9px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: transform 0.18s ease, filter 0.18s ease;
+            color: #f3f7ff; border: 1px solid rgba(255, 255, 255, 0.15); padding: 0 15px;
+            font-family: 'Space Grotesk', sans-serif; font-size: 11px; letter-spacing: 0.9px; font-weight: 600;
+            cursor: pointer; border-radius: 10px; transition: transform 0.18s ease, filter 0.18s ease;
         }
         .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
-        .btn-open {
-            background: rgba(42, 74, 133, 0.5);
-            color: #dceaff;
-            border-color: rgba(130, 176, 255, 0.45);
-        }
+        .btn-open { background: rgba(42, 74, 133, 0.5); color: #dceaff; border-color: rgba(130, 176, 255, 0.45); }
         .btn-open:hover { border-color: var(--accent-blue); }
         .btn-muted { background: rgba(45, 55, 85, 0.55); border-color: rgba(125, 146, 196, 0.35); color: #d0dcf5; }
-        .media-help {
-            margin-top: 8px;
-            font-size: 11px;
-            color: var(--text-dim);
-            line-height: 1.45;
-        }
-        .song-results {
-            margin-top: 8px;
-            max-height: 150px;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: rgba(10, 24, 52, 0.55);
-        }
-        .spotify-wrap {
-            margin-top: 10px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-            background: rgba(10, 24, 52, 0.55);
-            display: block;
-        }
+        
+        .media-help { margin-top: 8px; font-size: 11px; color: var(--text-dim); line-height: 1.45; }
+        .song-results { margin-top: 8px; max-height: 150px; overflow-y: auto; border: 1px solid var(--border); border-radius: 10px; background: rgba(10, 24, 52, 0.55); }
+        .spotify-wrap { margin-top: 10px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: rgba(10, 24, 52, 0.55); display: block; }
         .spotify-wrap.visible { display: block; }
-        .spotify-embed {
-            width: 100%;
-            height: 152px;
-            min-height: 152px;
-            border: none;
-            display: block;
-        }
-        .song-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 10px;
-            border-bottom: 1px solid rgba(126, 156, 214, 0.16);
-        }
+        .spotify-embed { width: 100%; height: 152px; min-height: 152px; border: none; display: block; }
+        .song-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 10px; border-bottom: 1px solid rgba(126, 156, 214, 0.16); }
         .song-item:last-child { border-bottom: none; }
-        .song-meta {
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .song-title {
-            font-size: 12px;
-            color: var(--text-main);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 185px;
-        }
-        .song-artist {
-            font-size: 10px;
-            color: var(--text-dim);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 185px;
-        }
-        .song-play {
-            padding: 6px 10px;
-            font-size: 10px;
-            border-radius: 8px;
-        }
-        .media-help a {
-            color: var(--accent-blue);
-            text-decoration: none;
-            border-bottom: 1px dashed rgba(99, 180, 255, 0.5);
-        }
+        .song-meta { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+        .song-title { font-size: 12px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
+        .song-artist { font-size: 10px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
+        .song-play { padding: 6px 10px; font-size: 10px; border-radius: 8px; }
+
+        .media-help a { color: var(--accent-blue); text-decoration: none; border-bottom: 1px dashed rgba(99, 180, 255, 0.5); }
         .media-help a:hover { color: #c8e4ff; border-bottom-color: #c8e4ff; }
         .btn-block { width: 100%; padding: 10px; display: block; }
         .timer-display {
-            font-size: 23px;
-            text-align: center;
-            font-family: 'Space Grotesk', sans-serif;
-            color: #eff5ff;
-            margin: 8px 0 12px;
-            letter-spacing: 1.6px;
-            line-height: 1.35;
-            font-weight: 700;
-            text-shadow: 0 0 16px rgba(114, 166, 255, 0.22);
+            font-size: 23px; text-align: center; font-family: 'Space Grotesk', sans-serif; color: #eff5ff;
+            margin: 8px 0 12px; letter-spacing: 1.6px; line-height: 1.35; font-weight: 700; text-shadow: 0 0 16px rgba(114, 166, 255, 0.22);
         }
         .quest-list { display: flex; flex-direction: column; gap: 10px; }
         .quest-list label { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-soft); cursor: pointer; }
@@ -281,26 +161,14 @@
 
         .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
         .header {
-            height: 64px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 28px;
-            background: linear-gradient(90deg, rgba(13, 34, 73, 0.86), rgba(25, 24, 58, 0.82));
-            backdrop-filter: blur(8px);
-            flex-shrink: 0;
+            height: 64px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;
+            padding: 0 28px; background: linear-gradient(90deg, rgba(13, 34, 73, 0.86), rgba(25, 24, 58, 0.82));
+            backdrop-filter: blur(8px); flex-shrink: 0;
         }
-        .header-title {
-            font-family: 'Space Grotesk', sans-serif;
-            color: #f2f7ff;
-            letter-spacing: 2.2px;
-            font-size: 16px;
-            font-weight: 700;
-        }
+        .header-title { font-family: 'Space Grotesk', sans-serif; color: #f2f7ff; letter-spacing: 2.2px; font-size: 16px; font-weight: 700; }
         .header-right { display: flex; align-items: center; gap: 14px; }
         .status-wrap { display: flex; align-items: center; gap: 7px; user-select: none; }
-
+        
         @keyframes heartbeat {
             0% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px rgba(116, 255, 210, 0.5); }
             50% { transform: scale(1.28); opacity: 0.82; box-shadow: 0 0 16px rgba(116, 255, 210, 0.7); }
@@ -312,12 +180,7 @@
         .clear-all-btn:hover { color: var(--accent-red); border-color: var(--accent-red); }
 
         #chat-box {
-            flex: 1;
-            overflow-y: auto;
-            padding: 28px 32px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+            flex: 1; overflow-y: auto; padding: 28px 32px; display: flex; flex-direction: column; gap: 18px;
             background:
                 radial-gradient(circle at 85% 0%, rgba(255, 90, 129, 0.09), transparent 32%),
                 radial-gradient(circle at 12% 100%, rgba(76, 139, 255, 0.12), transparent 34%);
@@ -325,112 +188,52 @@
         .msg { max-width: 75%; padding: 14px 18px; border-radius: 14px; line-height: 1.65; font-size: 15px; animation: fadeUp 0.35s ease; position: relative; box-shadow: 0 8px 18px rgba(3, 8, 20, 0.36); }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .msg-lucifer {
-            align-self: flex-start;
-            background: linear-gradient(145deg, rgba(43, 46, 99, 0.78), rgba(74, 43, 102, 0.64));
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--accent-red);
-            color: #f5deea;
+            align-self: flex-start; background: linear-gradient(145deg, rgba(43, 46, 99, 0.78), rgba(74, 43, 102, 0.64));
+            border: 1px solid var(--border); border-left: 3px solid var(--accent-red); color: #f5deea;
         }
         .msg-user {
-            align-self: flex-end;
-            background: linear-gradient(145deg, rgba(28, 80, 150, 0.76), rgba(56, 43, 132, 0.72));
-            border: 1px solid rgba(130, 176, 255, 0.45);
-            border-right: 3px solid var(--accent-blue);
-            color: #ecf4ff;
+            align-self: flex-end; background: linear-gradient(145deg, rgba(28, 80, 150, 0.76), rgba(56, 43, 132, 0.72));
+            border: 1px solid rgba(130, 176, 255, 0.45); border-right: 3px solid var(--accent-blue); color: #ecf4ff;
         }
         .msg-sender { font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 1.5px; margin-bottom: 7px; opacity: 0.82; font-weight: 600; }
         .msg-time { font-size: 10px; color: rgba(206, 220, 248, 0.72); margin-top: 6px; text-align: right; }
-        .date-divider { align-self: center; font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 1.7px; color: var(--text-dim); padding: 4px 12px; border: 1px solid rgba(113, 142, 199, 0.4); border-radius: 999px; margin: 4px 0; }
 
         .input-area {
-            padding: 16px 20px;
-            background: linear-gradient(180deg, rgba(11, 30, 65, 0.9), rgba(12, 24, 48, 0.92));
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-shrink: 0;
+            padding: 16px 20px; background: linear-gradient(180deg, rgba(11, 30, 65, 0.9), rgba(12, 24, 48, 0.92));
+            border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; flex-shrink: 0;
         }
         #user-in {
-            flex: 1;
-            background: var(--input);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 11px 14px;
-            border-radius: 10px;
-            outline: none;
-            font-size: 15px;
-            font-family: 'Inter', sans-serif;
+            flex: 1; background: var(--input); border: 1px solid var(--border); color: var(--text-main);
+            padding: 11px 14px; border-radius: 10px; outline: none; font-size: 15px; font-family: 'Inter', sans-serif;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         #user-in:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(76, 139, 255, 0.2); }
         .icon-btn {
-            background: var(--input);
-            border: 1px solid var(--border);
-            color: var(--text-soft);
-            width: 42px;
-            height: 42px;
-            cursor: pointer;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: transform 0.18s ease, border-color 0.18s ease;
-            flex-shrink: 0;
+            background: var(--input); border: 1px solid var(--border); color: var(--text-soft); width: 42px; height: 42px;
+            cursor: pointer; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; transition: transform 0.18s ease, border-color 0.18s ease; flex-shrink: 0;
         }
         .icon-btn:hover { transform: translateY(-1px); border-color: var(--accent-blue); }
-        #send-btn {
-            color: #f6f9ff;
-            background: linear-gradient(135deg, var(--accent-blue-strong), var(--accent-red-strong));
-            border-color: rgba(255, 255, 255, 0.2);
-        }
+        #send-btn { color: #f6f9ff; background: linear-gradient(135deg, var(--accent-blue-strong), var(--accent-red-strong)); border-color: rgba(255, 255, 255, 0.2); }
 
         .letter-overlay { position: fixed; inset: 0; background: rgba(4, 9, 20, 0.86); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .letter-overlay.visible { opacity: 1; pointer-events: all; }
         .letter-box {
-            background: linear-gradient(170deg, rgba(11, 29, 67, 0.96), rgba(25, 18, 49, 0.95));
-            border: 1px solid var(--border-strong);
-            border-radius: 16px;
-            width: min(600px, 90vw);
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 48px 52px;
-            position: relative;
-            box-shadow: 0 30px 60px rgba(2, 6, 17, 0.55);
+            background: linear-gradient(170deg, rgba(11, 29, 67, 0.96), rgba(25, 18, 49, 0.95)); border: 1px solid var(--border-strong);
+            border-radius: 16px; width: min(600px, 90vw); max-height: 80vh; overflow-y: auto; padding: 48px 52px; position: relative; box-shadow: 0 30px 60px rgba(2, 6, 17, 0.55);
         }
         .letter-close { position: absolute; top: 14px; right: 22px; background: none; border: none; color: var(--text-dim); font-size: 16px; cursor: pointer; font-family: 'Space Grotesk', sans-serif; }
         .letter-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 33px;
-            line-height: 1.45;
-            color: #d9e8ff;
-            white-space: pre-wrap;
-            letter-spacing: 0.5px;
-            opacity: 1;
-            transform: translateY(0);
-            filter: blur(0);
-            transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
+            font-family: 'Dancing Script', cursive; font-size: 33px; line-height: 1.45; color: #d9e8ff; white-space: pre-wrap;
+            letter-spacing: 0.5px; opacity: 1; transform: translateY(0); filter: blur(0); transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
         }
         .letter-text.is-revealing { animation: letterFadeIn 1.2s ease; }
-        @keyframes letterFadeIn {
-            0% { opacity: 0; transform: translateY(14px) scale(0.99); filter: blur(9px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
+        @keyframes letterFadeIn { 0% { opacity: 0; transform: translateY(14px) scale(0.99); filter: blur(9px); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+        
         .letter-btn {
-            width: 100%;
-            margin-top: 4px;
-            background: linear-gradient(135deg, rgba(68, 121, 237, 0.22), rgba(255, 70, 108, 0.2));
-            border: 1px solid rgba(140, 178, 255, 0.35);
-            color: #deebff;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 10px;
-            letter-spacing: 2px;
-            padding: 11px;
-            cursor: pointer;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: border-color 0.2s ease, filter 0.2s ease;
+            width: 100%; margin-top: 4px; background: linear-gradient(135deg, rgba(68, 121, 237, 0.22), rgba(255, 70, 108, 0.2));
+            border: 1px solid rgba(140, 178, 255, 0.35); color: #deebff; font-family: 'Space Grotesk', sans-serif; font-size: 10px;
+            letter-spacing: 2px; padding: 11px; cursor: pointer; border-radius: 10px; font-weight: 600; transition: border-color 0.2s ease, filter 0.2s ease;
         }
         .letter-btn:hover { border-color: var(--accent-red); filter: brightness(1.08); }
 
@@ -555,7 +358,8 @@ So I wrote code instead.
 <script>
 "use strict";
 
-const BACKEND_URL = "https://lucifer-backend-nas5.onrender.com";
+// POINTING TO LOCALHOST NOW (Runs directly on your laptop!)
+const BACKEND_URL = "http://127.0.0.1:10000";
 
 const FIREBASE_CONFIG = {
     apiKey:             "AIzaSyAJhhW9z-EopZTQE0191PxSjC1dAIM61mc",
@@ -587,7 +391,7 @@ const radioStatus = document.getElementById("radio-status");
 let songResultsData = [];
 let letterRevealTimer = null;
 
-// ── TIMER ──
+// FIXED THE DATE: July 2nd, 2026 at 10:17:00 AM
 const START_DATE = new Date(2026, 6, 2, 10, 17, 0);
 
 function updateLoveTimer() {
@@ -601,7 +405,6 @@ function updateLoveTimer() {
 }
 setInterval(updateLoveTimer, 1000);
 
-// ── CHAT ──
 window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("guild-pass").addEventListener("keydown", e => {
         if (e.key === "Enter") unlockGuild();
@@ -629,10 +432,9 @@ async function unlockGuild() {
 
     try {
         const healthRes = await fetch(BACKEND_URL + "/health");
-        if (!healthRes.ok) {
-            throw new Error("Backend health check failed.");
-        }
+        if (!healthRes.ok) throw new Error("Backend health check failed.");
         const health = await healthRes.json();
+        
         const down = Object.entries(health.apis || {})
             .filter(([, ok]) => !ok)
             .map(([name]) => name)
@@ -663,7 +465,7 @@ async function unlockGuild() {
         setStatus("Verification failed.");
     } catch (_) {
         errorEl.textContent = "Connection hazy... try again.";
-        setStatus("Could not complete backend/API checks.");
+        setStatus("Could not complete backend/API checks. Is app.py running?");
     } finally {
         btn.textContent = "UNSEAL";
         btn.disabled = false;
@@ -737,6 +539,7 @@ async function send() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.reply || "Chat failed");
         shouldResetContext = false;
+        
         const aiRef = await msgRef.push({ role:"lucifer", text: data.reply, time: Date.now(), src:"ai" });
         renderMessage({ role:"lucifer", text: data.reply, time: Date.now() }, aiRef.key);
         loader.remove();
@@ -766,9 +569,7 @@ function renderLoading() {
 async function clearAllChat() {
     if (!confirm("Clear all messages from Firebase and this chat? This cannot be undone.")) return;
     try {
-        if (!auth.currentUser) {
-            await auth.signInAnonymously();
-        }
+        if (!auth.currentUser) await auth.signInAnonymously();
         await msgRef.remove();
         chatBox.innerHTML = "";
         shouldResetContext = true;
@@ -784,7 +585,6 @@ function updateRadioStatus(text) {
     radioStatus.textContent = text;
 }
 
-// ── YOUTUBE SEARCH & PLAY (LAZY - No requests until user clicks SEARCH) ──
 let youtubeLastSearchTime = 0;
 
 async function searchYoutubeSongs() {
@@ -794,7 +594,6 @@ async function searchYoutubeSongs() {
         return;
     }
 
-    // Rate limit on frontend: no searches faster than 10s apart
     const now = Date.now();
     if (now - youtubeLastSearchTime < 10000) {
         const waitSecs = Math.ceil((10000 - (now - youtubeLastSearchTime)) / 1000);
@@ -823,7 +622,6 @@ async function searchYoutubeSongs() {
         const data = await res.json();
 
         if (!res.ok) {
-            // Detect quota exceeded
             if (res.status === 403 && data?.error?.includes("quota")) {
                 updateRadioStatus("🔴 YouTube API quota exhausted. Resets tomorrow.");
             } else if (res.status === 429) {
@@ -842,7 +640,7 @@ async function searchYoutubeSongs() {
             }));
             renderYoutubeResults();
             updateRadioStatus(`Found ${songResultsData.length} tracks.`);
-            playYoutubeTrack(0);
+            playYoutubeTrack(0, false);
         } else {
             songResultsData = [];
             renderYoutubeResults();
@@ -878,43 +676,72 @@ function renderYoutubeResults() {
     songResultsData.forEach((track, index) => {
         const row = document.createElement("div");
         row.className = "song-item";
+        
         const meta = document.createElement("div");
         meta.className = "song-meta";
+        
         const title = document.createElement("div");
         title.className = "song-title";
         title.textContent = track.trackName;
+        
         const artist = document.createElement("div");
         artist.className = "song-artist";
         artist.textContent = track.artistName;
-        const button = document.createElement("button");
-        button.className = "btn song-play";
-        button.textContent = "PLAY";
-        button.addEventListener("click", () => playYoutubeTrack(index));
+
+        // NEW: Creating the side-by-side button group
+        const btnGroup = document.createElement("div");
+        btnGroup.style.display = "flex";
+        btnGroup.style.gap = "6px";
+
+        // Regular PLAY button
+        const playBtn = document.createElement("button");
+        playBtn.className = "btn song-play";
+        playBtn.textContent = "PLAY";
+        playBtn.addEventListener("click", () => playYoutubeTrack(index, false));
+
+        // New POP OUT button
+        const popBtn = document.createElement("button");
+        popBtn.className = "btn song-play";
+        popBtn.style.background = "rgba(42, 74, 133, 0.5)"; 
+        popBtn.textContent = "POP OUT";
+        popBtn.addEventListener("click", () => playYoutubeTrack(index, true));
+
+        btnGroup.appendChild(playBtn);
+        btnGroup.appendChild(popBtn);
 
         meta.appendChild(title);
         meta.appendChild(artist);
         row.appendChild(meta);
-        row.appendChild(button);
+        row.appendChild(btnGroup); // Append the group instead of just one button
         songResults.appendChild(row);
     });
 }
 
-function playYoutubeTrack(index) {
+function playYoutubeTrack(index, isPopOut = false) {
     const track = songResultsData[index];
     if (!track) return;
     
     radioName.textContent = track.trackName;
-    updateRadioStatus("Now playing in the Guild Hall...");
-    
     const embedUrl = `https://www.youtube.com/embed/${track.id}?autoplay=1&rel=0&playsinline=1`;
-    document.getElementById("youtube-embed").src = embedUrl;
+    
+    if (isPopOut) {
+        updateRadioStatus("Playing in floating window...");
+        // Opens a clean popup window just for the video
+        window.open(
+            embedUrl, 
+            "GuildHallPlayer", 
+            "width=400,height=225,top=100,left=100,toolbar=no,menubar=no,scrollbars=no,resizable=yes"
+        );
+    } else {
+        updateRadioStatus("Now playing in the Guild Hall...");
+        document.getElementById("youtube-embed").src = embedUrl;
+    }
 }
 
 songSearchInput.addEventListener("keydown", e => {
     if (e.key === "Enter") searchYoutubeSongs();
 });
 
-// ── LETTER ──
 async function loadLetterFromFile() {
     const letterEl = document.getElementById("letter-text");
     if (!letterEl) return;
