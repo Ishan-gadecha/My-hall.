@@ -427,10 +427,11 @@ const FIREBASE_CONFIG = {
 firebase.initializeApp(FIREBASE_CONFIG);
 const db     = firebase.database();
 const auth   = firebase.auth();
-const msgRef = db.ref("messages");
+let msgRef   = db.ref("messages");
 
 let appStarted = false;
 let HANDSHAKE_SECRET = "";
+let currentUser = "ishan";
 
 const chatBox  = document.getElementById("chat-box");
 const userIn   = document.getElementById("user-in");
@@ -446,10 +447,16 @@ let songResultsData = [];
 let letterRevealTimer = null;
 
 // FIXED THE DATE: July 2nd, 2026 at 10:17:00 AM
-const START_DATE = new Date(2026, 6, 2, 10, 17, 0);
+const ISHAN_START_DATE = new Date(2026, 6, 2, 10, 17, 0);
 
 function updateLoveTimer() {
-    const diff = new Date() - START_DATE;
+    const isVania = currentUser === "vania";
+    if (isVania) {
+        document.getElementById("love-timer").innerHTML = `Happy 14th<br>Birthday!`;
+        return;
+    }
+
+    const diff = new Date() - ISHAN_START_DATE;
     if (diff < 0) return;
     const days = Math.floor(diff / 86400000);
     const hrs  = Math.floor((diff / 3600000) % 24);
@@ -535,6 +542,7 @@ async function unlockGuild() {
 
         if (res.ok && data.status === "authorized") {
             HANDSHAKE_SECRET = data.handshake || "";
+            currentUser = data.user || "ishan";
             if (!HANDSHAKE_SECRET) {
                 errorEl.textContent = "Handshake missing from server config.";
                 return;
@@ -569,10 +577,19 @@ async function startApp(setStatus = () => {}) {
         throw e;
     }
 
+    if (currentUser === "vania") {
+        document.querySelectorAll('.header-title').forEach(el => el.textContent = "VANIA'S GUILD HALL");
+        document.querySelector('.lock-title').textContent = "VANIA'S GUILD HALL";
+        document.querySelector('.panel h3').textContent = "Since 2012";
+        msgRef = db.ref("messages_vania");
+    } else {
+        msgRef = db.ref("messages");
+    }
+
     setStatus("Loading messages...");
     await loadHistory();
     setStatus("Starting live updates...");
-    listenForIshan();
+    listenForMessages();
     setStatus("Loading letter...");
     updateLoveTimer();
     loadLetterFromFile();
@@ -584,7 +601,10 @@ sendBtn.addEventListener("click", send);
 async function loadHistory() {
     const snap = await msgRef.orderByChild("time").once("value");
     if (!snap.exists()) {
-        const welcome = { role:"lucifer", text:"Welcome home, My blue. I'm here for you.", time: Date.now(), src:"ai" };
+        const welcomeText = currentUser === "vania" 
+            ? "Welcome home, Vania. I'm here for you." 
+            : "Welcome home, My blue. I'm here for you.";
+        const welcome = { role:"lucifer", text: welcomeText, time: Date.now(), src:"ai" };
         const ref = await msgRef.push(welcome);
         renderMessage(welcome, ref.key);
         return;
@@ -593,7 +613,7 @@ async function loadHistory() {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function listenForIshan() {
+function listenForMessages() {
     msgRef.orderByChild("time").on("child_added", snap => {
         const e = snap.val();
         if (document.querySelector(`[data-fbkey="${snap.key}"]`)) return;
@@ -617,7 +637,7 @@ async function send() {
         const res = await fetch(BACKEND_URL + "/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json", "X-Lucifer-Secret": HANDSHAKE_SECRET },
-            body: JSON.stringify({ message: text, reset_context: shouldResetContext })
+            body: JSON.stringify({ message: text, reset_context: shouldResetContext, user: currentUser })
         });
 
         const data = await res.json();
@@ -655,6 +675,13 @@ async function clearAllChat() {
     try {
         if (!auth.currentUser) await auth.signInAnonymously();
         await msgRef.remove();
+        
+        fetch(BACKEND_URL + "/clear-chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-Lucifer-Secret": HANDSHAKE_SECRET },
+            body: JSON.stringify({ user: currentUser })
+        }).catch(console.error);
+
         chatBox.innerHTML = "";
         shouldResetContext = true;
         updateRadioStatus("All chat messages deleted.");
@@ -936,7 +963,9 @@ async function loadLetterFromFile() {
     if (!letterEl) return;
 
     const fallbackText = letterEl.textContent;
-    const candidates = ["lucifer.txt", "From Lucifer.txt", "from-lucifer.txt", "letter.txt"];
+    const candidates = currentUser === "vania" 
+        ? ["vania.txt", "vania_letter.txt"] 
+        : ["lucifer.txt", "From Lucifer.txt", "from-lucifer.txt", "letter.txt"];
 
     for (const fileName of candidates) {
         try {
