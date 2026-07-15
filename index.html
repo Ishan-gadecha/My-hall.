@@ -243,19 +243,60 @@
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(95, 143, 255, 0.72), rgba(255, 87, 125, 0.66)); border-radius: 999px; }
+
+        .menu-btn { display: none; background: transparent; border: 1px solid var(--border); color: var(--text-main); font-size: 16px; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+        .menu-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(4, 9, 20, 0.7); backdrop-filter: blur(2px); z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .sidebar-overlay.active { opacity: 1; pointer-events: all; }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { position: fixed; left: -100%; top: 0; bottom: 0; z-index: 1000; width: 85vw; max-width: 340px; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: none; }
+            .sidebar.open { left: 0; box-shadow: 10px 0 24px rgba(3, 9, 24, 0.6); }
+            .menu-btn { display: flex; }
+            .header { padding: 0 16px; }
+            .header-title { font-size: 14px; }
+            .header-right { gap: 8px; }
+            .status-label { display: none; }
+            #chat-box { padding: 16px 12px; }
+            .msg { max-width: 85%; font-size: 14px; padding: 12px 14px; }
+        }
+
+        body.mobile-layout { flex-direction: column; }
+        body.mobile-layout .sidebar { position: fixed; left: -100%; top: 0; bottom: 0; z-index: 1000; width: 340px; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: none; }
+        body.mobile-layout .sidebar.open { left: 0; box-shadow: 10px 0 24px rgba(3, 9, 24, 0.6); }
+        body.mobile-layout .menu-btn { display: flex; }
+        body.mobile-layout .header { padding: 0 16px; }
+        body.mobile-layout .header-title { font-size: 14px; }
+        body.mobile-layout .header-right { gap: 8px; }
+        body.mobile-layout .status-label { display: none; }
     </style>
 </head>
 <body>
 
 <div id="site-lock">
     <h2 class="lock-title">GUILD HALL</h2>
-    <input type="password" id="guild-pass" class="lock-input" placeholder="Enter Secret Word">
-    <button class="btn" style="padding:12px 30px; font-size:12px;" onclick="unlockGuild()">UNSEAL</button>
+    <div id="layout-selection" style="display: flex; gap: 14px; flex-direction: column; align-items: center;">
+        <p style="color: var(--text-dim); font-size: 11px; font-family: 'Space Grotesk', sans-serif; letter-spacing: 2px;">SELECT YOUR INTERFACE</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+            <button class="btn" style="padding:14px 28px; font-size:12px;" onclick="selectLayout('pc')">PC LAYOUT</button>
+            <button class="btn" style="padding:14px 28px; font-size:12px;" onclick="selectLayout('phone')">PHONE LAYOUT</button>
+        </div>
+    </div>
+    
+    <div id="password-section" style="display: none; flex-direction: column; align-items: center; gap: 14px; opacity: 0; transition: opacity 0.4s ease;">
+        <input type="password" id="guild-pass" class="lock-input" placeholder="Enter Secret Word">
+        <button class="btn" style="padding:12px 30px; font-size:12px;" onclick="unlockGuild()">UNSEAL</button>
+        <button class="btn" style="padding:8px 16px; font-size:10px; background: transparent; border: none; box-shadow: none; color: var(--text-dim);" onclick="resetLayoutSelection()">← BACK</button>
+    </div>
+    
     <div id="lock-error"></div>
     <div id="lock-status"></div>
 </div>
 
 <div id="guild-content">
+
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileMenu()"></div>
 
 <div class="letter-overlay" id="letter-overlay">
     <div class="letter-box">
@@ -340,7 +381,10 @@ So I wrote code instead.
 
 <div class="main">
     <div class="header">
-        <h2 class="header-title">ISHAN'S GUILD HALL</h2>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <button class="menu-btn" id="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <h2 class="header-title">ISHAN'S GUILD HALL</h2>
+        </div>
         <div class="header-right">
             <button class="clear-all-btn" onclick="clearAllChat()">CLEAR ALL</button>
             <div class="status-wrap">
@@ -420,6 +464,36 @@ window.addEventListener("DOMContentLoaded", () => {
         if (e.key === "Enter") unlockGuild();
     });
 });
+
+function selectLayout(layout) {
+    if (layout === 'phone') {
+        document.body.classList.add('mobile-layout');
+    } else {
+        document.body.classList.remove('mobile-layout');
+    }
+    
+    document.getElementById('layout-selection').style.display = 'none';
+    const passSec = document.getElementById('password-section');
+    passSec.style.display = 'flex';
+    // tiny delay to allow display block to render before triggering opacity transition
+    setTimeout(() => { passSec.style.opacity = '1'; }, 50);
+}
+
+function resetLayoutSelection() {
+    const passSec = document.getElementById('password-section');
+    passSec.style.opacity = '0';
+    setTimeout(() => {
+        passSec.style.display = 'none';
+        document.getElementById('layout-selection').style.display = 'flex';
+    }, 400);
+}
+
+function toggleMobileMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
 
 async function unlockGuild() {
     const passInput = document.getElementById("guild-pass");
