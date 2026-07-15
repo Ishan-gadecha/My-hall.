@@ -149,6 +149,10 @@
         .media-help a { color: var(--accent-blue); text-decoration: none; border-bottom: 1px dashed rgba(99, 180, 255, 0.5); }
         .media-help a:hover { color: #c8e4ff; border-bottom-color: #c8e4ff; }
         .btn-block { width: 100%; padding: 10px; display: block; }
+        
+        .mode-toggle { display: flex; gap: 4px; margin-bottom: 10px; background: rgba(10, 24, 52, 0.55); padding: 4px; border-radius: 10px; border: 1px solid var(--border); }
+        .mode-btn { flex: 1; padding: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 1px; color: var(--text-dim); background: transparent; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+        .mode-btn.active { background: linear-gradient(135deg, var(--accent-blue-strong), var(--accent-red-strong)); color: #fff; box-shadow: 0 2px 8px rgba(47, 137, 255, 0.25); }
         .timer-display {
             font-size: 23px; text-align: center; font-family: 'Space Grotesk', sans-serif; color: #eff5ff;
             margin: 8px 0 12px; letter-spacing: 1.6px; line-height: 1.35; font-weight: 700; text-shadow: 0 0 16px rgba(114, 166, 255, 0.22);
@@ -299,19 +303,25 @@ So I wrote code instead.
 
     <div class="panel">
         <h3>Bard's Crystal</h3>
+        
+        <div class="mode-toggle">
+            <button class="mode-btn active" id="mode-spotify" onclick="setPlayerMode('spotify')">SPOTIFY</button>
+            <button class="mode-btn" id="mode-youtube" onclick="setPlayerMode('youtube')">YOUTUBE</button>
+        </div>
+
         <div class="radio-meta">
-            <div class="radio-name" id="radio-name">YouTube Player</div>
-            <div class="radio-status" id="radio-status">Search for any song on YouTube.</div>
+            <div class="radio-name" id="radio-name">Spotify Player</div>
+            <div class="radio-status" id="radio-status">Search for any song on Spotify.</div>
         </div>
         
         <div class="media-controls">
-            <input type="text" id="song-search" class="media-input" placeholder="Search song on YouTube...">
-            <button class="btn" onclick="searchYoutubeSongs()">SEARCH</button>
+            <input type="text" id="song-search" class="media-input" placeholder="Search song on Spotify...">
+            <button class="btn" onclick="searchSongs()">SEARCH</button>
         </div>
-        <div class="media-help" id="media-help">Search and play directly inside the Guild Hall. No premium required.</div>
+        <div class="media-help" id="media-help">Listen to tracks directly in the Guild Hall.</div>
         
-        <div class="spotify-wrap visible" id="youtube-wrap" style="height: 152px; margin-top: 10px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border);">
-            <iframe id="youtube-embed" style="width: 100%; height: 100%; border: none;" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        <div class="spotify-wrap visible" id="player-wrap" style="height: 152px; margin-top: 10px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border);">
+            <iframe id="media-embed" style="width: 100%; height: 100%; border: none;" src="" allow="autoplay; encrypted-media; picture-in-picture; clipboard-write; fullscreen" allowfullscreen></iframe>
         </div>
         <div class="song-results" id="song-results"></div>
     </div>
@@ -726,20 +736,122 @@ function playYoutubeTrack(index, isPopOut = false) {
     
     if (isPopOut) {
         updateRadioStatus("Playing in floating window...");
-        // Opens a clean popup window just for the video
-        window.open(
-            embedUrl, 
-            "GuildHallPlayer", 
-            "width=400,height=225,top=100,left=100,toolbar=no,menubar=no,scrollbars=no,resizable=yes"
-        );
+        window.open(embedUrl, "GuildHallPlayer", "width=400,height=225,top=100,left=100,toolbar=no,menubar=no,scrollbars=no,resizable=yes");
     } else {
         updateRadioStatus("Now playing in the Guild Hall...");
-        document.getElementById("youtube-embed").src = embedUrl;
+        document.getElementById("media-embed").src = embedUrl;
     }
 }
 
+let currentPlayerMode = 'spotify';
+
+function setPlayerMode(mode) {
+    currentPlayerMode = mode;
+    document.getElementById('mode-spotify').classList.toggle('active', mode === 'spotify');
+    document.getElementById('mode-youtube').classList.toggle('active', mode === 'youtube');
+    
+    document.getElementById('radio-name').textContent = mode === 'spotify' ? 'Spotify Player' : 'YouTube Player';
+    document.getElementById('radio-status').textContent = `Search for any song on ${mode === 'spotify' ? 'Spotify' : 'YouTube'}.`;
+    document.getElementById('song-search').placeholder = `Search song on ${mode === 'spotify' ? 'Spotify' : 'YouTube'}...`;
+    
+    songResultsData = [];
+    document.getElementById('song-results').innerHTML = '';
+    document.getElementById('media-embed').src = '';
+}
+
+function searchSongs() {
+    if (currentPlayerMode === 'youtube') {
+        searchYoutubeSongs();
+    } else {
+        searchSpotifySongs();
+    }
+}
+
+async function searchSpotifySongs() {
+    const query = songSearchInput.value.trim();
+    if (!query) {
+        updateRadioStatus("Enter a song name first.");
+        return;
+    }
+
+    if (!HANDSHAKE_SECRET) {
+        updateRadioStatus("Not authenticated yet.");
+        return;
+    }
+
+    updateRadioStatus("Searching Spotify...");
+    songResults.innerHTML = "";
+
+    try {
+        const res = await fetch(BACKEND_URL + "/search-spotify", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Lucifer-Secret": HANDSHAKE_SECRET
+            },
+            body: JSON.stringify({ query })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+            updateRadioStatus(`❌ ${data?.error || "Search failed"}`);
+            return;
+        }
+
+        if (data.tracks && data.tracks.items && data.tracks.items.length > 0) {
+            songResultsData = data.tracks.items.map(track => ({
+                id: track.id,
+                trackName: track.name,
+                artistName: track.artists.map(a => a.name).join(", ")
+            }));
+            renderSpotifyResults();
+            updateRadioStatus(`Found ${songResultsData.length} tracks.`);
+            playSpotifyTrack(0);
+        } else {
+            songResultsData = [];
+            renderSpotifyResults();
+            updateRadioStatus("No results found.");
+        }
+    } catch (err) {
+        console.error(err);
+        updateRadioStatus("❌ Network error. Check connection.");
+    }
+}
+
+function renderSpotifyResults() {
+    songResults.innerHTML = "";
+    
+    if (songResultsData.length === 0) {
+        songResults.innerHTML = `<div class="song-item"><div class="song-meta"><div class="song-title">No results</div><div class="song-artist">Try another keyword</div></div></div>`;
+        return;
+    }
+
+    songResultsData.forEach((track, index) => {
+        const row = document.createElement("div");
+        row.className = "song-item";
+        row.innerHTML = `
+            <div class="song-meta">
+                <div class="song-title">${track.trackName}</div>
+                <div class="song-artist">${track.artistName}</div>
+            </div>
+            <button class="btn song-play" onclick="playSpotifyTrack(${index})">PLAY</button>
+        `;
+        songResults.appendChild(row);
+    });
+}
+
+function playSpotifyTrack(index) {
+    const track = songResultsData[index];
+    if (!track) return;
+
+    radioName.textContent = track.trackName;
+    const embedUrl = `https://open.spotify.com/embed/track/${track.id}?utm_source=generator&theme=0`;
+    document.getElementById("media-embed").src = embedUrl;
+    updateRadioStatus("Now playing: " + track.trackName);
+}
+
 songSearchInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") searchYoutubeSongs();
+    if (e.key === "Enter") searchSongs();
 });
 
 async function loadLetterFromFile() {
